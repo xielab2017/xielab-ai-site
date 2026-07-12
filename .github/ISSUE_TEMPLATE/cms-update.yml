@@ -1,0 +1,50 @@
+name: Editorial Console structured update
+description: Manually submit a structured update for any website section
+title: "[CMS] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The preferred route is the website `/admin/` Editorial Console, which generates this payload automatically. Use this form only for manual recovery or advanced editing.
+  - type: dropdown
+    id: collection
+    attributes:
+      label: Collection
+      options: [site, openings, members, research, publications, patents, news, tools]
+    validations:
+      required: true
+  - type: dropdown
+    id: operation
+    attributes:
+      label: Operation
+      options: [upsert, merge-object, archive, delete]
+    validations:
+      required: true
+  - type: input
+    id: key
+    attributes:
+      label: Stable key
+      description: Examples include id:jane-doe, doi:10.xxxx/xxxx, url:https://..., or name:EasyMicroPlot
+    validations:
+      required: true
+  - type: dropdown
+    id: ai
+    attributes:
+      label: AI assist
+      options: ["true", "false"]
+    validations:
+      required: true
+  - type: textarea
+    id: record
+    attributes:
+      label: JSON record
+      description: Paste one valid JSON object inside a fenced json code block.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: note
+    attributes:
+      label: Editorial note
+      description: Explain the source and reason for this change.

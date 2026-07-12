@@ -1,6 +1,6 @@
-# Xie Lab AI Website v0.2 — AI CMS
+# Xie Lab AI Website v0.3 — Editorial Console + AI CMS
 
-> Word-to-website member updates, AI-assisted content intake, publication/patent synchronization and bilingual GitHub Pages deployment.
+> Section-by-section editorial management, Word-to-website member updates, AI-assisted bilingual content, publication/patent synchronization and review-first deployment.
 
 A bilingual, data-driven research-group website rebuilt from the legacy structure of `xielab.net`. The repository supports GitHub Pages deployment, PubMed synchronization, optional Google Scholar metadata, patent discovery, OpenRouter translation and AI-assisted Word imports for lab-member updates.
 
@@ -8,12 +8,29 @@ A bilingual, data-driven research-group website rebuilt from the legacy structur
 
 - `index.html` and `assets/` — responsive bilingual website.
 - `data/` — structured content collections; routine content updates do not require HTML editing.
-- `admin/` — AI Content Studio with Word-update, workflow and JSON-editor shortcuts.
+- `admin/` — full Editorial Console for homepage, contact, openings, members, research, publications, patents, news and tools.
 - `scripts/` — publication, patent, translation, legacy migration and Word-member import pipelines.
 - `.github/workflows/` — Pages deployment, scheduled research-output sync, Word import, AI issue intake and validation.
 - `templates/` — bilingual Word template for team updates.
 
-## v0.2 AI CMS update routes
+## v0.3 Editorial Console
+
+Open `/admin/` on the deployed website for a complete section-by-section management interface. Each module provides structured bilingual forms, record search/filtering, add/edit controls, member-to-alumni transitions, deletion requests, browser drafts and JSON preview.
+
+A console submission creates a deterministic `[CMS]` GitHub issue. The authorized workflow then:
+
+1. verifies that the issue author is a repository owner, member or collaborator;
+2. parses the allowlisted collection and JSON record;
+3. optionally calls OpenRouter only for approved narrative and bilingual fields;
+4. protects names, identifiers, dates, emails, publication metadata and URLs from AI rewriting;
+5. applies collection-specific merging, archiving or deletion;
+6. validates the complete content dataset;
+7. creates an audit report and review pull request;
+8. publishes only after the pull request is merged.
+
+See [Editorial Console guide](docs/EDITORIAL_CONSOLE.md).
+
+## Existing AI CMS update routes
 
 The site now has three practical maintenance routes:
 
@@ -113,7 +130,7 @@ PubMed records are treated as the primary biomedical source. Scholar and patent 
 
 ## Quick JSON updates
 
-The `/admin/` editor loads a selected collection, validates JSON in the browser and downloads the revised file. Commit the downloaded file to the corresponding path under `data/`.
+The `/admin/` Editorial Console presents schema-aware forms for every public section and submits review-first update requests. A JSON preview remains available for audit and advanced editing.
 
 The standard **Website content update** issue form collects news, publication, patent, project and tool changes. An authorized issue triggers OpenRouter extraction, deterministic collection merging, validation and a review pull request. Use the dedicated Word workflow for member rosters and biographies.
 

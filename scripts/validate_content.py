@@ -51,6 +51,19 @@ def validate() -> list[str]:
         if not str(site.get(key) or "").strip():
             errors.append(f"data/site.json: missing {key}")
 
+    for key in ("github", "google_scholar", "pubmed", "legacy_source"):
+        value = str(site.get(key) or "").strip()
+        if value and not is_url(value):
+            errors.append(f"data/site.json: invalid URL in {key}")
+
+    openings = load_json(ROOT / "data" / "openings.json")
+    if not isinstance(openings, dict):
+        errors.append("data/openings.json must be a JSON object")
+    else:
+        for key in ("en", "zh"):
+            if not str(openings.get(key) or "").strip():
+                errors.append(f"data/openings.json: missing {key}")
+
     data: dict[str, list[dict[str, Any]]] = {}
     for name in COLLECTIONS:
         value = load_json(ROOT / "data" / f"{name}.json")
@@ -75,9 +88,22 @@ def validate() -> list[str]:
             if item.get("url") and not is_url(str(item["url"])):
                 errors.append(f"patents: record {index} has an invalid URL")
     if "tools" in data:
+        errors.extend(validate_unique(data["tools"], ("id", "url", "name"), "tools"))
         for index, item in enumerate(data["tools"], start=1):
             if item.get("url") and not is_url(str(item["url"])):
                 errors.append(f"tools: record {index} has an invalid URL")
+            if not str(item.get("name") or "").strip():
+                errors.append(f"tools: record {index} has no name")
+    if "research" in data:
+        errors.extend(validate_unique(data["research"], ("id",), "research"))
+        for index, item in enumerate(data["research"], start=1):
+            if not str(item.get("title_en") or item.get("title_zh") or "").strip():
+                errors.append(f"research: record {index} has no title")
+    if "news" in data:
+        errors.extend(validate_unique(data["news"], ("id",), "news"))
+        for index, item in enumerate(data["news"], start=1):
+            if not str(item.get("title_en") or item.get("title_zh") or "").strip():
+                errors.append(f"news: record {index} has no title")
 
     return errors
 
