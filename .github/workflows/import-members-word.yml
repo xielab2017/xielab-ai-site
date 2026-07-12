@@ -1,0 +1,144 @@
+name: Import lab members from Word
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  workflow_dispatch:
+    inputs:
+      docx_url:
+        description: Public or GitHub attachment URL for a .docx file
+        required: true
+        type: string
+      import_label:
+        description: Short label used in the branch and report name
+        required: false
+        default: manual-member-update
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: member-word-import-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (startsWith(github.event.issue.title, '[Member Word Import]') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install importer dependencies
+        run: pip install -r requirements.txt
+
+      - name: Resolve Word document
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          MANUAL_URL: ${{ inputs.docx_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p incoming-runtime
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          Path('incoming-runtime/issue-body.txt').write_text(os.getenv('ISSUE_BODY', ''), encoding='utf-8')
+          PY
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            python scripts/download_issue_docx.py --url "$MANUAL_URL" --out incoming-runtime/member-update.docx
+          else
+            python scripts/download_issue_docx.py --body-file incoming-runtime/issue-body.txt --out incoming-runtime/member-update.docx
+          fi
+
+      - name: Import, translate and merge member records
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
+        run: |
+          LABEL="${{ inputs.import_label }}"
+          if [ -z "$LABEL" ]; then LABEL="issue-${{ github.event.issue.number }}"; fi
+          python scripts/import_members_docx.py \
+            --input incoming-runtime/member-update.docx \
+            --import-id "$LABEL"
+          python scripts/validate_content.py
+
+      - name: Create review branch and commit
+        id: commit
+        run: |
+          ISSUE_NO="${{ github.event.issue.number }}"
+          if [ -z "$ISSUE_NO" ]; then ISSUE_NO="run-${{ github.run_id }}"; fi
+          BRANCH="automation/member-word-${ISSUE_NO}"
+          git config user.name "xielab-site-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add data/members.json assets/members/imports imports/reports
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "content: update lab members from Word"
+          git push --force-with-lease origin "$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Open review pull request
+        if: steps.commit.outputs.changed == 'true'
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          cat > /tmp/pr-body.md <<'EOF'
+          ## Word-based member update
+
+          This pull request was generated automatically from an uploaded Word document.
+
+          The workflow:
+          - extracted text, tables and publishable profile images from the document;
+          - used OpenRouter to produce bilingual structured profiles;
+          - matched existing records by email and bilingual name;
+          - merged additions and edits without removing omitted members;
+          - archived or deleted a member only when the document explicitly requested it;
+          - validated the resulting member dataset;
+          - generated an import report under `imports/reports/`.
+
+          ### Required review
+          Confirm names, roles, team categories, alumni status, public email addresses, external links and photograph assignments before merging.
+          EOF
+          PR_URL=$(gh pr list --repo "${{ github.repository }}" --head "$BRANCH" --state open --json url --jq '.[0].url')
+          if [ -z "$PR_URL" ]; then
+            PR_URL=$(gh pr create \
+              --repo "${{ github.repository }}" \
+              --base "${{ github.event.repository.default_branch }}" \
+              --head "$BRANCH" \
+              --title "Update lab members from Word" \
+              --body-file /tmp/pr-body.md)
+          fi
+          echo "url=$PR_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on source issue
+        if: github.event_name == 'issues' && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "AI extraction and deterministic member merging completed. Review the generated pull request before publishing: ${PR_URL}"
+
+      - name: Report no changes
+        if: steps.commit.outputs.changed == 'false'
+        run: echo "The document did not produce any member-data changes."

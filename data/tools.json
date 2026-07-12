@@ -1,0 +1,38 @@
+[
+  {
+    "name": "EasyMultiProfiler",
+    "url": "https://easymultiprofiler.xielab.net/",
+    "desc_en": "A user-oriented multi-omics analysis and visualization platform.",
+    "desc_zh": "面向用户的多组学分析与可视化平台。"
+  },
+  {
+    "name": "EasyMicroPlot",
+    "url": "https://github.com/xielab2017/EasyMicroPlot",
+    "desc_en": "An R package for downstream microbiome analysis and publication-ready visualization.",
+    "desc_zh": "用于微生物组下游分析与论文级可视化的R包。"
+  },
+  {
+    "name": "DeepScreening",
+    "url": "https://deepscreening.xielab.net/",
+    "desc_en": "Deep-learning-enabled virtual screening for rapid drug discovery.",
+    "desc_zh": "基于深度学习的虚拟筛选与快速药物发现平台。"
+  },
+  {
+    "name": "TCMIO",
+    "url": "https://tcmio.xielab.net/",
+    "desc_en": "A database for exploring traditional Chinese medicine in immuno-oncology.",
+    "desc_zh": "用于探索中医药免疫肿瘤机制的综合数据库。"
+  },
+  {
+    "name": "DenovoProfiling",
+    "url": "https://denovoprofiling.xielab.net/",
+    "desc_en": "A web server for profiling de novo generated molecular libraries.",
+    "desc_zh": "用于从头生成分子库性能评估的网络服务器。"
+  },
+  {
+    "name": "ResearchHub",
+    "url": "https://github.com/xielab2017/research-hub",
+    "desc_en": "An AI-assisted literature, note-taking and protein/peptide design workspace.",
+    "desc_zh": "融合文献检索、笔记与蛋白/肽设计的AI科研工作台。"
+  }
+]

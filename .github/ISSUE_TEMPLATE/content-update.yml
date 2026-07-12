@@ -1,0 +1,25 @@
+name: Website content update
+description: Submit a news, publication, patent, member or project update
+title: "[Website] "
+labels: []
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Content type
+      options: [News, Publication, Patent, Member, Research project, Tool]
+    validations: {required: true}
+  - type: input
+    id: title_en
+    attributes: {label: English title}
+    validations: {required: true}
+  - type: input
+    id: title_zh
+    attributes: {label: Chinese title}
+  - type: textarea
+    id: details
+    attributes: {label: Details, DOI, PMID, patent number or links}
+    validations: {required: true}
+  - type: input
+    id: date
+    attributes: {label: Date, placeholder: YYYY-MM-DD}

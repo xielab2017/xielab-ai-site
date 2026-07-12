@@ -1,0 +1,43 @@
+name: Sync publications patents and translations
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 2 * * 1"
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -r requirements.txt
+      - name: PubMed sync
+        env: {NCBI_API_KEY: "${{ secrets.NCBI_API_KEY }}"}
+        run: python scripts/sync_pubmed.py
+      - name: Google Scholar merge
+        continue-on-error: true
+        env:
+          SCHOLAR_PROVIDER: serpapi
+          SERPAPI_API_KEY: "${{ secrets.SERPAPI_API_KEY }}"
+          SCHOLAR_AUTHOR_ID: "${{ secrets.SCHOLAR_AUTHOR_ID }}"
+        run: python scripts/sync_scholar.py
+      - name: Patent discovery
+        continue-on-error: true
+        run: python scripts/sync_patents.py
+      - name: Translate new content
+        continue-on-error: true
+        env:
+          OPENROUTER_API_KEY: "${{ secrets.OPENROUTER_API_KEY }}"
+          OPENROUTER_MODEL: "${{ vars.OPENROUTER_MODEL }}"
+        run: python scripts/translate_openrouter.py
+      - name: Validate synchronized content
+        run: python scripts/validate_content.py
+      - name: Commit updates
+        run: |
+          git config user.name "xielab-site-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: synchronize research outputs"
+          git push

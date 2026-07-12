@@ -1,0 +1,43 @@
+name: Upload a Word file to update lab members
+description: AI extracts, translates, matches and merges public team profiles into a review pull request
+title: "[Member Word Import] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Upload one `.docx` file containing new or revised lab-member profiles. The automated workflow creates a review pull request; it does not publish changes immediately.
+
+        **Privacy:** this is a public repository. Include only information and photographs approved for public display. Do not include phone numbers, identity numbers, home addresses, private evaluations or unpublished confidential material.
+  - type: textarea
+    id: attachment
+    attributes:
+      label: Word document
+      description: Drag and drop the `.docx` file into this box. Wait for the upload link to appear before submitting the issue.
+      placeholder: Drag member-update.docx here
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Document scope
+      description: This helps reviewers understand whether the Word file is a partial update or a complete roster.
+      options:
+        - Partial update — add or revise selected members
+        - Complete current roster — all current members are listed
+        - Alumni update
+    validations:
+      required: true
+  - type: textarea
+    id: instructions
+    attributes:
+      label: Special instructions
+      description: State explicit actions such as “move Zhang San to alumni” or “replace Li Si's biography.” Missing people are never removed automatically.
+      placeholder: Optional notes for the AI importer and human reviewer
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Publication confirmation
+      options:
+        - label: I confirm that the uploaded text and photographs may be published on the Xie Lab website.
+          required: true

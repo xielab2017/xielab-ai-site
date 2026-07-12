@@ -1,0 +1,25 @@
+{
+  "name": "Xie Lab",
+  "tagline_en": "Host–Microbiome Systems Biology, Metabolic Health & AI-Enabled Discovery",
+  "tagline_zh": "宿主–微生物组系统生物学、代谢健康与AI驱动发现",
+  "intro_en": "The Xie Lab investigates how host genes, microbial communities and bioactive molecules interact to shape metabolism, aging and disease. We integrate multi-omics, bioinformatics, mechanistic animal models and translational research.",
+  "intro_zh": "谢黎炜课题组聚焦宿主基因、肠道微生物群与生物活性分子如何共同调控代谢、衰老与疾病，融合多组学、生物信息学、动物模型及转化研究。",
+  "pi": "Liwei Xie, Ph.D. / 谢黎炜 博士",
+  "email": "xielw@gdim.cn",
+  "github": "https://github.com/xielab2017",
+  "google_scholar": "",
+  "pubmed": "https://pubmed.ncbi.nlm.nih.gov/?term=Liwei+Xie",
+  "address_en": "Research Group for Gut Microbiome and Health, China",
+  "address_zh": "肠道微生态与健康研究团队，中国",
+  "legacy_source": "http://www.xielab.net/",
+  "pubmed_queries": [
+    "(Xie L[Author]) AND (microbiota OR microbiome OR metabolism OR postbiotic)",
+    "(Liwei Xie[Author])"
+  ],
+  "scholar_author_id": "",
+  "patent_inventor_names": [
+    "Liwei Xie",
+    "Xie Liwei",
+    "谢黎炜"
+  ]
+}

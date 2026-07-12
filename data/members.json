@@ -1,0 +1,37 @@
+[
+  {
+    "id": "liwei-xie",
+    "name_en": "Liwei Xie",
+    "name_zh": "谢黎炜",
+    "role_en": "Principal Investigator",
+    "role_zh": "课题组负责人",
+    "group": "principal-investigator",
+    "status": "current",
+    "order": 1,
+    "bio_en": "Principal investigator studying host–microbiome interactions, systemic metabolism, aging and translational health through multi-omics, bioinformatics, mechanistic models and AI-enabled biomedical research.",
+    "bio_zh": "课题组负责人，聚焦宿主–微生物组互作、全身代谢、衰老及健康转化研究，综合运用多组学、生物信息学、机制模型与AI生物医学方法。",
+    "research_interests_en": [
+      "Host–microbiome interactions",
+      "Metabolic health and aging",
+      "Multi-omics and bioinformatics",
+      "AI-enabled biomedical discovery"
+    ],
+    "research_interests_zh": [
+      "宿主–微生物组互作",
+      "代谢健康与衰老",
+      "多组学与生物信息学",
+      "AI驱动的生物医学发现"
+    ],
+    "education_en": [],
+    "education_zh": [],
+    "email": "xielw@gdim.cn",
+    "orcid": "",
+    "google_scholar": "",
+    "homepage": "",
+    "photo": "",
+    "joined": "",
+    "left": "",
+    "source_doc": "legacy migration",
+    "updated_at": "2026-07-13T00:00:00Z"
+  }
+]

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 44" role="img" aria-label="Xie Lab">
+ <defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#5b3fd1"/><stop offset="1" stop-color="#16a3a6"/></linearGradient></defs>
+ <path fill="none" stroke="url(#g)" stroke-width="3" d="M12 8c22 0 22 28 44 28S78 8 100 8"/><path fill="none" stroke="url(#g)" stroke-width="3" d="M12 36c22 0 22-28 44-28s22 28 44 28"/>
+ <g fill="#111827"><text x="110" y="27" font-family="Arial,sans-serif" font-size="22" font-weight="700">XIE LAB</text></g>
+</svg>

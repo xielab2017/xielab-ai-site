@@ -1,0 +1,30 @@
+[
+  {
+    "icon": "host",
+    "title_en": "Host Metabolic Regulation",
+    "title_zh": "宿主代谢调控",
+    "text_en": "Identify regulatory factors and inter-organ circuits governing adipose tissue, skeletal muscle, liver and systemic energy homeostasis.",
+    "text_zh": "解析脂肪、骨骼肌、肝脏及全身能量稳态中的关键调控因子与器官互作网络。"
+  },
+  {
+    "icon": "microbiome",
+    "title_en": "Gut Microbiome & Health",
+    "title_zh": "肠道微生物组与健康",
+    "text_en": "Define causal host–microbe and microbe–metabolite interactions in obesity, diabetes, fatty liver disease, inflammation and aging.",
+    "text_zh": "解析肥胖、糖尿病、脂肪肝、炎症与衰老中的宿主–菌群及菌群–代谢物因果互作。"
+  },
+  {
+    "icon": "omics",
+    "title_en": "Multi-Omics & Bioinformatics",
+    "title_zh": "多组学与生物信息学",
+    "text_en": "Integrate transcriptomics, proteomics, 16S, metagenomics and clinical data to discover mechanisms, biomarkers and intervention targets.",
+    "text_zh": "整合转录组、蛋白质组、16S、宏基因组与临床数据，发现机制、标志物及干预靶点。"
+  },
+  {
+    "icon": "ai",
+    "title_en": "AI, Synthetic Biology & Translation",
+    "title_zh": "AI、合成生物学与转化",
+    "text_en": "Develop AI-enabled scientific tools, functional foods, probiotics/postbiotics, living medicines and computational drug-discovery platforms.",
+    "text_zh": "开发AI科研工具、功能食品、益生菌/后生元、活菌药物及计算药物发现平台。"
+  }
+]
